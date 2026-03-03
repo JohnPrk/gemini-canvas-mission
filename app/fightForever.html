@@ -24,7 +24,7 @@
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-6px) scale(1.02); }
         }
-        .animate-idle { animation: idleBob 2.5s ease-in-out infinite; }
+        .animate-idle { animation: idleBob 2s ease-in-out infinite; }
 
         /* 몬스터 등장 */
         @keyframes slideIn {
@@ -59,23 +59,22 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
 
-        /* 스킬 슬롯 가시성 강화 */
+        /* 스킬 슬롯 디자인 */
         .skill-slot {
-            width: 4rem; height: 4rem; border-radius: 1.2rem;
+            width: 3.8rem; height: 3.8rem; border-radius: 1.2rem;
             background: rgba(15, 23, 42, 0.9); border: 2px solid rgba(255,255,255,0.1);
             position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
-        .skill-ready { border-color: #818cf8; box-shadow: 0 0 15px rgba(129,140,248,0.6); }
+        .skill-ready { border-color: #818cf8; box-shadow: 0 0 20px rgba(129,140,248,0.5); }
         .skill-level-badge {
             position: absolute; top: -1px; right: -1px;
             background: #4338ca; color: white;
             font-size: 10px; font-weight: 900; padding: 2px 8px;
             border-radius: 0 1.2rem 0 1rem; border: 1.5px solid rgba(255,255,255,0.3);
             z-index: 30;
-            box-shadow: -2px 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* 이펙트 */
+        /* 이펙트 노드 */
         .effect-node { position: absolute; pointer-events: none; z-index: 100; }
         .slash-active {
             animation: slashAnim 0.3s steps(4) forwards;
@@ -153,7 +152,7 @@
             <span class="text-emerald-400 font-black text-sm" id="p-gold">0 G</span>
         </div>
         <div class="bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-800 shadow-lg">
-            <span class="text-red-400 font-black text-[10px] italic">POTION <span id="p-potions">0</span></span>
+            <span class="text-red-400 font-black text-[10px] italic uppercase">Potion <span id="p-potions">0</span></span>
         </div>
     </div>
 
@@ -190,7 +189,7 @@
             <div class="relative" id="enemy-node">
                 <div id="enemy-area" class="opacity-0 flex flex-col items-center">
                     <div class="w-16 h-3 bg-black/40 absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-[50%] blur-md"></div>
-                    <!-- 지정해주신 이모지 리스트 사용 -->
+                    <!-- 몬스터 이모지 -->
                     <div id="enemy-sprite" class="text-7xl drop-shadow-2xl mb-2">👾</div>
 
                     <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-20">
@@ -214,12 +213,12 @@
             </div>
         </div>
 
-        <!-- [HUD 통합 배치] 스킬 + 레벨 + 경험치 -->
+        <!-- [HUD 통합 배치] 스킬 + 레벨 + 경험치 (스킬 아래 레벨 위치 요청 반영) -->
         <div class="z-20 w-full px-6 pb-6 flex flex-col items-center space-y-4">
-            <!-- 스킬 슬롯 영역 (확대) -->
+            <!-- 스킬 슬롯 영역 -->
             <div id="skill-container" class="flex space-x-4 justify-center"></div>
 
-            <!-- 통합 성장 HUD -->
+            <!-- 통합 성장 HUD (스킬 아래 배치) -->
             <div class="hud-glass w-full max-w-[280px] px-5 py-3 rounded-[1.5rem] flex items-center space-x-5 shadow-2xl">
                 <div class="flex flex-col shrink-0">
                     <div class="text-[8px] text-indigo-400 font-black uppercase leading-none mb-1 tracking-widest" id="p-job-display">READY</div>
@@ -230,22 +229,22 @@
                         <span>Experience Progress</span>
                         <span id="exp-text">0 / 10</span>
                     </div>
-                    <div class="w-full bg-black/50 h-2 rounded-full overflow-hidden p-[1.5px] border border-white/5">
-                        <div id="exp-progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-400 h-full progress-bar rounded-full shadow-[0_0_8px_rgba(99,102,241,0.6)]" style="width: 0%"></div>
+                    <div class="w-full bg-black/60 h-2 rounded-full overflow-hidden p-[1.5px] border border-white/5">
+                        <div id="exp-progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-400 h-full progress-bar rounded-full shadow-[0_0_10px_rgba(99,102,241,0.6)]" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 메뉴 구역 -->
+    <!-- 메뉴 및 강화 요약 -->
     <div class="shrink-0 space-y-3">
-        <!-- 4대 스탯 한눈에 보기 -->
+        <!-- 4대 스탯 확인 -->
         <div class="grid grid-cols-4 gap-2 bg-slate-900/80 p-3 rounded-[1.5rem] border border-slate-800 shadow-xl">
-            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5">P-Atk</div><div id="p-atk" class="text-[10px] text-orange-400 font-black">0</div></div>
-            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5">P-Def</div><div id="p-def" class="text-[10px] text-blue-400 font-black">0</div></div>
-            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5">M-Atk</div><div id="p-mag-atk" class="text-[10px] text-purple-400 font-black">0</div></div>
-            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5">M-Def</div><div id="p-mag-def" class="text-[10px] text-cyan-400 font-black">0</div></div>
+            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5 tracking-tighter">P-Atk</div><div id="p-atk" class="text-[10px] text-orange-400 font-black">0</div></div>
+            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5 tracking-tighter">P-Def</div><div id="p-def" class="text-[10px] text-blue-400 font-black">0</div></div>
+            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5 tracking-tighter">M-Atk</div><div id="p-mag-atk" class="text-[10px] text-purple-400 font-black">0</div></div>
+            <div class="text-center"><div class="text-[6px] text-slate-500 uppercase font-black mb-0.5 tracking-tighter">M-Def</div><div id="p-mag-def" class="text-[10px] text-cyan-400 font-black">0</div></div>
         </div>
 
         <div class="grid grid-cols-3 gap-2">
@@ -255,12 +254,12 @@
         </div>
     </div>
 
-    <!-- 하단 상세 정보 패널 -->
+    <!-- 하단 패널 -->
     <div class="grow flex flex-col bg-slate-900 rounded-[2.5rem] border border-slate-800 overflow-hidden min-h-[140px] shadow-inner">
         <div id="panel-combat" class="flex flex-col h-full p-5">
             <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
                 <span class="text-[9px] text-indigo-400 font-black tracking-widest uppercase">실시간 모험 기록</span>
-                <button onclick="toggleSpeed()" id="speed-btn" class="text-[7px] font-bold bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/20 uppercase">SPEED x1</button>
+                <button onclick="toggleSpeed()" id="speed-btn" class="text-[7px] font-bold bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/20">SPEED x1</button>
             </div>
             <div id="battle-log" class="log-container grow overflow-y-auto text-[9px] space-y-1.5 text-slate-400 pr-1">
                 <div>모험가님, 시작할 캐릭터를 고르세요!</div>
@@ -268,16 +267,16 @@
         </div>
 
         <div id="panel-upgrade" class="hidden h-full p-5 overflow-y-auto space-y-2">
-            <h3 class="font-black text-indigo-400 text-[10px] uppercase mb-1 tracking-widest">수련 센터</h3>
+            <h3 class="font-black text-indigo-400 text-[10px] uppercase mb-1 tracking-widest">능력 수련</h3>
             <div id="upgrade-list" class="space-y-2"></div>
         </div>
 
         <div id="panel-shop" class="hidden h-full p-5 overflow-y-auto space-y-3">
             <h3 class="font-black text-yellow-400 text-[10px] uppercase mb-1 tracking-widest">비밀 거래소</h3>
-            <div class="flex justify-between items-center bg-green-900/10 p-3 rounded-2xl border border-green-500/20 mb-1">
+            <div class="flex justify-between items-center bg-green-900/10 p-3 rounded-2xl border border-green-500/20 mb-1 shadow-inner">
                 <div class="flex flex-col">
                     <span class="text-[10px] font-black text-green-400">생명의 정수 (x5)</span>
-                    <span class="text-[7px] text-slate-500 font-bold uppercase">체력 30% 미만 시 자동 사용</span>
+                    <span class="text-[7px] text-slate-500 font-bold uppercase">자동 회복 장치 가동 중</span>
                 </div>
                 <button onclick="buyPotion()" class="bg-green-700 hover:bg-green-600 px-4 py-1.5 rounded-xl text-[10px] font-black shadow-lg text-white">10 G</button>
             </div>
@@ -288,7 +287,16 @@
 
 <script>
     // ---------------------------------------------------------
-    // 캐릭터 SVG 생성기 (전사: 업로드 이미지 특징, 나머지는 복구)
+    // 직업 데이터 선언 (jobsData 중복 정의 방지)
+    // ---------------------------------------------------------
+    const jobsData = {
+        warrior: { name: '전사', atk: 350, def: 320, magAtk: 10, magDef: 200, hp: 12000 },
+        mage: { name: '마법사', atk: 60, def: 150, magAtk: 600, magDef: 400, hp: 6500 },
+        thief: { name: '도적', atk: 500, def: 200, magAtk: 150, magDef: 200, hp: 8500 }
+    };
+
+    // ---------------------------------------------------------
+    // 캐릭터 SVG 생성기
     // ---------------------------------------------------------
     const getHeroSVG = (job, width = 80) => {
         const colors = {
@@ -337,7 +345,7 @@
     };
 
     // ---------------------------------------------------------
-    // 게임 시스템 데이터
+    // 게임 시스템 초기 상태
     // ---------------------------------------------------------
     const state = {
         isInitialized: false, gameSpeed: 1,
@@ -351,15 +359,15 @@
         world: { chapter: 1, subStage: 1, totalKills: 0, subStageKills: 0, maxChapters: 5 },
         currentEnemy: null,
         shopItems: [
-            { id: 'w1', name: '초보의 도끼', type: 'weapon', atk: 350, magAtk: 50, price: 30 },
-            { id: 'w2', name: '참격의 대검', type: 'weapon', atk: 2000, magAtk: 300, price: 500 },
-            { id: 'w3', name: '신의 심판', type: 'weapon', atk: 15000, magAtk: 3000, price: 3000 },
-            { id: 'm1', name: '고대 지팡이', type: 'weapon', atk: 50, magAtk: 650, price: 30 },
-            { id: 'm2', name: '별의 보주', type: 'weapon', atk: 180, magAtk: 4000, price: 500 },
-            { id: 'm3', name: '차원 파쇄기', type: 'weapon', atk: 600, magAtk: 22000, price: 3000 },
-            { id: 'a1', n: '가죽 비늘 옷', type: 'armor', def: 250, magDef: 220, price: 30 },
-            { id: 'a2', n: '용금 전신갑주', type: 'armor', def: 1800, magDef: 1600, price: 600 },
-            { id: 'a3', n: '성역의 보석', type: 'armor', def: 10000, magDef: 9500, price: 4500 }
+            { id: 'w1', name: '녹슨 검', type: 'weapon', atk: 350, magAtk: 50, def: 0, magDef: 0, price: 30 },
+            { id: 'w2', name: '명공의 대검', type: 'weapon', atk: 2000, magAtk: 300, def: 0, magDef: 0, price: 500 },
+            { id: 'w3', name: '용살자', type: 'weapon', atk: 15000, magAtk: 3000, def: 1000, magDef: 1000, price: 3000 },
+            { id: 'm1', name: '나무 지팡이', type: 'weapon', atk: 50, magAtk: 650, def: 0, magDef: 0, price: 30 },
+            { id: 'm2', name: '마도사의 보주', type: 'weapon', atk: 100, magAtk: 4000, def: 0, magDef: 0, price: 500 },
+            { id: 'm3', name: '공허의 지식', type: 'weapon', atk: 300, magAtk: 22000, def: 500, magDef: 2000, price: 3000 },
+            { id: 'a1', name: '가죽 방어구', type: 'armor', atk: 0, magAtk: 0, def: 250, magDef: 220, price: 30 },
+            { id: 'a2', name: '강철 기사 갑주', type: 'armor', atk: 0, magAtk: 0, def: 1800, magDef: 1600, price: 600 },
+            { id: 'a3', name: '성역의 비늘', type: 'armor', atk: 500, magAtk: 500, def: 10000, magDef: 9500, price: 4500 }
         ],
         boughtIds: []
     };
@@ -390,12 +398,9 @@
         ]
     };
 
-    const jobsData = {
-        warrior: { name: '전사', atk: 350, def: 320, magAtk: 10, magDef: 200, hp: 12000 },
-        mage: { name: '마법사', atk: 60, def: 150, magAtk: 600, magDef: 400, hp: 6500 },
-        thief: { name: '도적', atk: 500, def: 200, magAtk: 150, magDef: 200, hp: 8500 }
-    };
-
+    // ---------------------------------------------------------
+    // 유틸리티 및 UI 핸들러
+    // ---------------------------------------------------------
     const safeSetText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
 
     function selectJob(id) {
@@ -489,9 +494,25 @@
     function renderShop() {
         const c = document.getElementById('shop-items'); if(!c) return; c.innerHTML = '';
         state.shopItems.forEach(it => {
-            const bought = state.boughtIds.includes(it.id), equip = (state.player.equipment.weapon?.id === it.id || state.player.equipment.armor?.id === it.id);
-            const div = document.createElement('div'); div.className = `flex justify-between items-center bg-slate-800/40 p-3 rounded-2xl border border-slate-700 shadow-md ${bought?'opacity-50':''}`;
-            div.innerHTML = `<div><div class="text-[10px] font-black text-slate-200">${it.name}</div><div class="text-[8px] text-indigo-400 font-bold uppercase">${it.atk?'PA+'+it.atk:''} ${it.magAtk?'MA+'+it.magAtk:''}</div></div><button onclick="buyItem('${it.id}')" class="${bought?'bg-slate-700':'bg-yellow-600'} px-4 py-2 rounded-xl text-[10px] font-black transition active:scale-95 text-white" ${bought&&equip?'disabled':''}>${bought?(equip?'착용 중':'교체'):it.price+'G'}</button>`;
+            const bought = state.boughtIds.includes(it.id);
+            const equipped = (state.player.equipment.weapon?.id === it.id || state.player.equipment.armor?.id === it.id);
+            const div = document.createElement('div');
+            div.className = `flex justify-between items-center bg-slate-800/40 p-3 rounded-2xl border border-slate-700 shadow-md ${bought ? 'opacity-50' : ''}`;
+
+            let bText = '';
+            if (it.atk > 0) bText += `PA+${it.atk} `;
+            if (it.magAtk > 0) bText += `MA+${it.magAtk} `;
+            if (it.def > 0) bText += `PD+${it.def} `;
+            if (it.magDef > 0) bText += `MD+${it.magDef} `;
+
+            div.innerHTML = `
+                <div>
+                    <div class="text-[10px] font-black text-slate-200">${it.name}</div>
+                    <div class="text-[8px] text-indigo-400 font-bold uppercase tracking-tighter">${bText.trim()}</div>
+                </div>
+                <button onclick="buyItem('${it.id}')" class="${bought ? 'bg-slate-700' : 'bg-yellow-600'} px-4 py-2 rounded-xl text-[10px] font-black transition active:scale-95 text-white" ${bought && equipped ? 'disabled' : ''}>
+                    ${bought ? (equipped ? '착용 중' : '교체') : it.price + 'G'}
+                </button>`;
             c.appendChild(div);
         });
     }
@@ -502,9 +523,9 @@
         if (!state.isInitialized || state.isMonsterEntering) return;
         const w = state.world, ch = chapterBases[w.chapter];
 
-        // 요청하신 몬스터 이모지 리스트 적용
-        const monsterList = [
-            {n:'까마귀',e:'🐦‍⬛',a:2.0,d:1.0,ma:2.5}, {n:'독수리',e:'🦅',a:2.5,d:1.2,ma:1.5},
+        // 요청하신 몬스터 이모지 풀 적용
+        const monsterPool = [
+            {n:'까마귀',e:'🐦‍⬛',a:2.2,d:1.0,ma:2.5}, {n:'독수리',e:'🦅',a:2.5,d:1.2,ma:1.5},
             {n:'박쥐',e:'🦇',a:1.8,d:0.8,ma:3.0}, {n:'개미',e:'🐜',a:1.5,d:2.5,ma:0.5},
             {n:'모기',e:'🦟',a:3.0,d:0.5,ma:1.0}, {n:'티라노',e:'🦖',a:4.5,d:2.5,ma:1.5},
             {n:'뱀',e:'🐍',a:2.2,d:1.1,ma:3.5}, {n:'상어',e:'🦈',a:3.5,d:1.8,ma:1.0},
@@ -514,8 +535,7 @@
             {n:'매머드',e:'🦣',a:3.5,d:4.0,ma:2.0}, {n:'캥거루',e:'🦘',a:2.8,d:1.3,ma:1.5}
         ];
 
-        // 챕터별로 랜덤하게 선택 (전체 리스트에서 무작위 선택)
-        const t = monsterList[Math.floor(Math.random() * monsterList.length)];
+        const t = monsterPool[Math.floor(Math.random() * monsterPool.length)];
         const m = Math.pow(1.18, (w.chapter - 1) * 1.5 + (w.subStage * 0.12));
 
         state.currentEnemy = {
@@ -535,7 +555,7 @@
     function battleTick() {
         if(state.isMonsterEntering) return;
         const p = state.player, curA = getCurrentStat('atk'), curD = getCurrentStat('def'), curMA = getCurrentStat('magAtk'), curMD = getCurrentStat('magDef');
-        if(p.hp/p.maxHp <= 0.3 && p.potions > 0) { p.potions--; p.hp = Math.min(p.maxHp, p.hp+(p.maxHp * 0.5)); addLog(`물약 자동 사용! (50% 회복)`, 'text-green-400 font-bold'); }
+        if(p.hp/p.maxHp <= 0.3 && p.potions > 0) { p.potions--; p.hp = Math.min(p.maxHp, p.hp+(p.maxHp * 0.5)); addLog(`위기 상황! 자동 물약 사용`, 'text-green-400 font-bold'); }
 
         const now = Date.now(), sks = jobSkills[p.job]; let sk = null;
         for(let i=sks.length-1; i>=0; i--) if(p.level >= sks[i].unlock && now-sks[i].lastUsed >= sks[i].cd) { sk = sks[i]; break; }
@@ -580,12 +600,12 @@
         if(p.exp >= req) {
             p.level++; p.exp = 0; p.maxHp += 3000; p.hp = p.maxHp;
             p.baseAtk += 200; p.baseMagAtk += 200; p.baseDef += 150; p.baseMagDef += 150;
-            addLog(`LEVEL UP! Lv.${p.level} 영웅 각성!`, 'text-yellow-400 font-black'); renderUpgrades();
+            addLog(`LEVEL UP! Lv.${p.level} 능력치 각성!`, 'text-yellow-400 font-black'); renderUpgrades();
         }
         w.totalKills++; w.subStageKills++;
         if(w.subStageKills >= 10) {
             w.subStage++; w.subStageKills = 0;
-            if(w.subStage > 10 && w.chapter < w.maxChapters) { w.chapter++; w.subStage = 1; addLog(`차원 이동! 챕터 ${w.chapter} 진입`, 'text-indigo-400 font-black'); }
+            if(w.subStage > 10 && w.chapter < w.maxChapters) { w.chapter++; w.subStage = 1; addLog(`새로운 챕터 진입!`, 'text-indigo-400 font-black'); }
         }
         state.currentEnemy = null; document.getElementById('enemy-area').classList.add('opacity-0'); updateUI();
     }
